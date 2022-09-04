@@ -1,3 +1,74 @@
+let firstOperand = "";
+let secondOperand = "";
+let currentOperation = null;
+
+const btnNumber = document.querySelectorAll("[data-number]");
+const btnOperator = document.querySelectorAll("[data-operator]");
+const btnClear = document.getElementById("clear");
+const btnDelete = document.getElementById("delete");
+const btnEquals = document.getElementById("equals");
+const btnDecimal = document.getElementById("decimal");
+const lastOperationDisplay = document.getElementById("lastOperationDispaly");
+const currentOperationDisplay = document.getElementById(
+  "currentOperationDispaly"
+);
+btnEquals.addEventListener("click", calculate);
+btnDelete.addEventListener("click", deleteNumber);
+btnClear.addEventListener("click", clearAll);
+btnDecimal.addEventListener("click", appendDecimal);
+
+btnNumber.forEach((button) =>
+  button.addEventListener("click", () => appendNumber(button.textContent))
+);
+
+btnOperator.forEach((button) =>
+  button.addEventListener("click", () => setOperation(button.textContent))
+);
+
+function appendNumber(number) {
+  if (currentOperationDisplay.textContent === "0") clearDisplay();
+  currentOperationDisplay.textContent += number;
+}
+
+function setOperation(operator) {
+  if (currentOperation !== null) calculate();
+  firstOperand = currentOperationDisplay.textContent;
+  currentOperation = operator;
+  lastOperationDisplay.textContent = `${firstOperand} ${currentOperation}`;
+  clearDisplay();
+}
+
+function calculate() {
+  secondOperand = currentOperationDisplay.textContent;
+  currentOperationDisplay.textContent = operate(
+    currentOperation,
+    firstOperand,
+    secondOperand
+  );
+  lastOperationDisplay.textContent = `${firstOperand} ${currentOperation} ${secondOperand} =`;
+  currentOperation = null;
+}
+
+function appendDecimal() {
+  if (currentOperationDisplay.textContent.includes(".")) return;
+  currentOperationDisplay.textContent += ".";
+}
+
+function deleteNumber() {
+  currentOperationDisplay.textContent = currentOperationDisplay.textContent
+    .toString()
+    .slice(0, -1);
+}
+
+function clearAll() {
+  lastOperationDisplay.textContent = "";
+  currentOperationDisplay.textContent = "0";
+}
+
+function clearDisplay() {
+  currentOperationDisplay.textContent = "";
+}
+
 const add = (a, b) => a + b;
 const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
@@ -19,42 +90,4 @@ function operate(operator, a, b) {
     default:
       return null;
   }
-}
-
-const btnNumber = document.querySelectorAll("[data-number]");
-const btnOperator = document.querySelectorAll("[data-operator]");
-const btnClear = document.getElementById("clear");
-const btnDelete = document.getElementById("delete");
-const btnEquals = document.getElementById("equals");
-const btnDot = document.getElementById("dot");
-const lastOperationDisplay = document.getElementById("lastOperationDispaly");
-const currentOperationDisplay = document.getElementById(
-  "currentOperationDispaly"
-);
-
-btnDelete.onclick = () => deleteNumber();
-btnClear.onclick = () => clear();
-
-btnNumber.forEach((button) =>
-  button.addEventListener("click", () => appendNumber(button.textContent))
-);
-function appendNumber(number) {
-  // if (currentOperationDisplay.textContent === "0" || shouldResetScreen)
-  //   resetScreen();
-  currentOperationDisplay.textContent += number;
-}
-
-btnOperator.forEach((button) =>
-  button.addEventListener("click", () => setOperation(button.textContent))
-);
-
-function deleteNumber() {
-  currentOperationDisplay.textContent = currentOperationDisplay.textContent
-    .toString()
-    .slice(0, -1);
-}
-
-function clear() {
-  lastOperationDisplay.innerHTML = "";
-  currentOperationDisplay.innerHTML = "";
 }
