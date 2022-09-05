@@ -3,6 +3,7 @@
   margin: 0;
   padding: 0;
   user-select: none;
+  font-family: "Inconsolata", monospace;
 }
 
 body {
@@ -14,15 +15,15 @@ body {
   background-color: #e8f1f2;
   height: 750px;
   width: 440px;
-  margin: 100px auto;
-  padding: 10px;
-  padding-bottom: 25px;
+  margin: 150px auto;
+  padding: 30px 0px;
   border-radius: 10px;
   display: grid;
+  justify-content: center;
   gap: 5px;
   grid-template-areas:
     "display display display display"
-    "clear clear delete divide"
+    "clear delete powerOf divide"
     "seven eight nine multiply"
     "four five six minus"
     "one two three plus"
@@ -75,10 +76,6 @@ body {
   font-weight: bold;
   cursor: pointer;
   width: 100px;
-}
-
-#clear {
-  width: 200px;
 }
 
 .btn:hover {

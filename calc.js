@@ -2,6 +2,7 @@ let firstOperand = "";
 let secondOperand = "";
 let currentOperator = null;
 let operatorSet = false;
+let operationComplete = false;
 
 const btnNumber = document.querySelectorAll("[data-number]");
 const btnOperator = document.querySelectorAll("[data-operator]");
@@ -11,21 +12,26 @@ const btnEquals = document.getElementById("equals");
 const btnDecimal = document.getElementById("decimal");
 const lastOperation = document.getElementById("lastOperation");
 const currentOperation = document.getElementById("currentOperation");
+const btnNegPos = document.getElementById("negPos");
 
 btnEquals.addEventListener("click", calculate);
 btnDelete.addEventListener("click", deleteNumber);
 btnClear.addEventListener("click", clearAll);
 btnDecimal.addEventListener("click", appendDecimal);
+btnNegPos.addEventListener("click", addNegPos);
 
-btnNumber.forEach((button) =>
-  button.addEventListener("click", () => appendNumber(button.textContent))
+btnNumber.forEach((e) =>
+  e.addEventListener("click", () => appendNumber(e.textContent))
 );
-btnOperator.forEach((button) =>
-  button.addEventListener("click", () => setOperation(button.textContent))
+btnOperator.forEach((e) =>
+  e.addEventListener("click", () => setOperation(e.textContent))
 );
 
 function appendNumber(number) {
-  if (currentOperation.textContent === "0" || operatorSet) clearDisplay();
+  if (operationComplete === true) {
+    clearDisplay(), (lastOperation.textContent = "");
+  } else if (currentOperation.textContent === "0" || operatorSet)
+    clearDisplay();
   currentOperation.textContent += number;
 }
 
@@ -47,6 +53,7 @@ function calculate() {
   );
   lastOperation.textContent = `${firstOperand} ${currentOperator} ${secondOperand} =`;
   currentOperator = null;
+  operationComplete = true;
 }
 
 function appendDecimal() {
@@ -54,10 +61,15 @@ function appendDecimal() {
   currentOperation.textContent += ".";
 }
 
+function addNegPos() {
+  if (currentOperation.textContent.includes("-")) {
+    currentOperation.textContent = currentOperation.textContent.slice(1);
+  } else if (currentOperation.textContent !== "0")
+    currentOperation.textContent = "-" + currentOperation.textContent;
+}
+
 function deleteNumber() {
-  currentOperation.textContent = currentOperation.textContent
-    .toString()
-    .slice(0, -1);
+  currentOperation.textContent = currentOperation.textContent.slice(0, -1);
 }
 
 function clearAll() {
@@ -71,6 +83,7 @@ function clearAll() {
 function clearDisplay() {
   currentOperation.textContent = "";
   operatorSet = false;
+  operationComplete = false;
 }
 
 const add = (a, b) => a + b;
@@ -89,8 +102,11 @@ function operate(operator, a, b) {
     case "×":
       return multiply(a, b);
     case "÷":
-      if (b === 0) return null, alert("You can't divide by 0!");
+      if (b === 0)
+        return null, (currentOperation.textContent = "You cannot divide by 0");
       else return divide(a, b);
+    case "^":
+      return Math.pow(a, b);
     default:
       return null;
   }
