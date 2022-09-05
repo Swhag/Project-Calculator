@@ -18,7 +18,7 @@ btnEquals.addEventListener("click", calculate);
 btnDelete.addEventListener("click", deleteNumber);
 btnClear.addEventListener("click", clearAll);
 btnDecimal.addEventListener("click", appendDecimal);
-btnNegative.addEventListener("click", addNegPos);
+btnNegative.addEventListener("click", addNegative);
 
 btnNumber.forEach((e) =>
   e.addEventListener("click", () => appendNumber(e.textContent))
@@ -61,7 +61,7 @@ function appendDecimal() {
   currentOperation.textContent += ".";
 }
 
-function addNegPos() {
+function addNegative() {
   if (currentOperation.textContent.includes("-")) {
     currentOperation.textContent = currentOperation.textContent.slice(1);
   } else if (currentOperation.textContent !== "0")
@@ -128,5 +128,9 @@ document.addEventListener("keydown", (e) => {
       return setOperation("^");
     case "Enter":
       return calculate();
+    case "c":
+      return clearAll();
+    case "Backspace":
+      return deleteNumber();
   }
 });
