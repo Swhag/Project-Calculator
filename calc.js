@@ -12,13 +12,13 @@ const btnEquals = document.getElementById("equals");
 const btnDecimal = document.getElementById("decimal");
 const lastOperation = document.getElementById("lastOperation");
 const currentOperation = document.getElementById("currentOperation");
-const btnNegPos = document.getElementById("negPos");
+const btnNegative = document.getElementById("negative");
 
 btnEquals.addEventListener("click", calculate);
 btnDelete.addEventListener("click", deleteNumber);
 btnClear.addEventListener("click", clearAll);
 btnDecimal.addEventListener("click", appendDecimal);
-btnNegPos.addEventListener("click", addNegPos);
+btnNegative.addEventListener("click", addNegPos);
 
 btnNumber.forEach((e) =>
   e.addEventListener("click", () => appendNumber(e.textContent))
@@ -111,3 +111,22 @@ function operate(operator, a, b) {
       return null;
   }
 }
+document.addEventListener("keydown", (e) => {
+  if (e.key >= 0 && e.key <= 10) {
+    appendNumber(e.key);
+  }
+  switch (e.key) {
+    case "+":
+      return setOperation("+");
+    case "-":
+      return setOperation("−");
+    case "*":
+      return setOperation("×");
+    case "/":
+      return setOperation("÷");
+    case "^":
+      return setOperation("^");
+    case "Enter":
+      return calculate();
+  }
+});
