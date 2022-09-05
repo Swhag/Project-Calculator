@@ -1,6 +1,7 @@
 let firstOperand = "";
 let secondOperand = "";
-let currentOperation = null;
+let currentOperator = null;
+let operatorSet = false;
 
 const btnNumber = document.querySelectorAll("[data-number]");
 const btnOperator = document.querySelectorAll("[data-operator]");
@@ -8,10 +9,9 @@ const btnClear = document.getElementById("clear");
 const btnDelete = document.getElementById("delete");
 const btnEquals = document.getElementById("equals");
 const btnDecimal = document.getElementById("decimal");
-const lastOperationDisplay = document.getElementById("lastOperationDispaly");
-const currentOperationDisplay = document.getElementById(
-  "currentOperationDispaly"
-);
+const lastOperation = document.getElementById("lastOperation");
+const currentOperation = document.getElementById("currentOperation");
+
 btnEquals.addEventListener("click", calculate);
 btnDelete.addEventListener("click", deleteNumber);
 btnClear.addEventListener("click", clearAll);
@@ -20,53 +20,57 @@ btnDecimal.addEventListener("click", appendDecimal);
 btnNumber.forEach((button) =>
   button.addEventListener("click", () => appendNumber(button.textContent))
 );
-
 btnOperator.forEach((button) =>
   button.addEventListener("click", () => setOperation(button.textContent))
 );
 
 function appendNumber(number) {
-  if (currentOperationDisplay.textContent === "0") clearDisplay();
-  currentOperationDisplay.textContent += number;
+  if (currentOperation.textContent === "0" || operatorSet) clearDisplay();
+  currentOperation.textContent += number;
 }
 
 function setOperation(operator) {
-  if (currentOperation !== null) calculate();
-  firstOperand = currentOperationDisplay.textContent;
-  currentOperation = operator;
-  lastOperationDisplay.textContent = `${firstOperand} ${currentOperation}`;
-  clearDisplay();
+  if (currentOperator !== null) calculate();
+  firstOperand = currentOperation.textContent;
+  currentOperator = operator;
+  lastOperation.textContent = `${firstOperand} ${currentOperator}`;
+  operatorSet = true;
 }
 
 function calculate() {
-  secondOperand = currentOperationDisplay.textContent;
-  currentOperationDisplay.textContent = operate(
-    currentOperation,
+  if (currentOperator === null || operatorSet) return;
+  secondOperand = currentOperation.textContent;
+  currentOperation.textContent = operate(
+    currentOperator,
     firstOperand,
     secondOperand
   );
-  lastOperationDisplay.textContent = `${firstOperand} ${currentOperation} ${secondOperand} =`;
-  currentOperation = null;
+  lastOperation.textContent = `${firstOperand} ${currentOperator} ${secondOperand} =`;
+  currentOperator = null;
 }
 
 function appendDecimal() {
-  if (currentOperationDisplay.textContent.includes(".")) return;
-  currentOperationDisplay.textContent += ".";
+  if (currentOperation.textContent.includes(".")) return;
+  currentOperation.textContent += ".";
 }
 
 function deleteNumber() {
-  currentOperationDisplay.textContent = currentOperationDisplay.textContent
+  currentOperation.textContent = currentOperation.textContent
     .toString()
     .slice(0, -1);
 }
 
 function clearAll() {
-  lastOperationDisplay.textContent = "";
-  currentOperationDisplay.textContent = "0";
+  lastOperation.textContent = "";
+  currentOperation.textContent = "0";
+  firstOperand = "";
+  secondOperand = "";
+  currentOperator = null;
 }
 
 function clearDisplay() {
-  currentOperationDisplay.textContent = "";
+  currentOperation.textContent = "";
+  operatorSet = false;
 }
 
 const add = (a, b) => a + b;
@@ -81,11 +85,11 @@ function operate(operator, a, b) {
     case "+":
       return add(a, b);
     case "−":
-      return substract(a, b);
+      return subtract(a, b);
     case "×":
       return multiply(a, b);
     case "÷":
-      if (b === 0) return null;
+      if (b === 0) return null, alert("You can't divide by 0!");
       else return divide(a, b);
     default:
       return null;

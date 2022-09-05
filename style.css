@@ -13,20 +13,20 @@ body {
   border: 3px solid #028090;
   background-color: #e8f1f2;
   height: 750px;
-  width: 450px;
+  width: 440px;
   margin: 100px auto;
-  padding: 20px;
-  padding-bottom: 30px;
+  padding: 10px;
+  padding-bottom: 25px;
   border-radius: 10px;
   display: grid;
   gap: 5px;
   grid-template-areas:
     "display display display display"
-    "clear clear delete delete"
-    "seven eight nine divide"
-    "four five six multiply"
-    "one two three minus"
-    "dot zero equal plus";
+    "clear clear delete divide"
+    "seven eight nine multiply"
+    "four five six minus"
+    "one two three plus"
+    "negPos zero dot equal";
 }
 
 .display {
@@ -39,9 +39,6 @@ body {
   min-height: 100px;
   padding: 10px;
   display: grid;
-  grid-template-areas:
-    "displayTop"
-    "displayBot";
 }
 
 .display-last {
@@ -77,6 +74,11 @@ body {
   font-size: 25px;
   font-weight: bold;
   cursor: pointer;
+  width: 100px;
+}
+
+#clear {
+  width: 200px;
 }
 
 .btn:hover {
