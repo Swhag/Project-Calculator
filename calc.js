@@ -111,8 +111,9 @@ function operate(operator, a, b) {
       return null;
   }
 }
+
 document.addEventListener("keydown", (e) => {
-  if (e.key >= 0 && e.key <= 10) {
+  if (e.key >= 0 && e.key <= 9) {
     appendNumber(e.key);
   }
   switch (e.key) {
@@ -129,8 +130,11 @@ document.addEventListener("keydown", (e) => {
     case "Enter":
       return calculate();
     case "c":
+    case "Escape":
       return clearAll();
     case "Backspace":
       return deleteNumber();
+    case ".":
+      return appendDecimal();
   }
 });
