@@ -7,7 +7,7 @@
 }
 
 body {
-  background: #f6f6f6;
+  background: #eeeeee;
 }
 
 #header {
@@ -106,10 +106,10 @@ p {
   box-shadow: 0 0 1rem #002335;
 }
 
-.oprator {
+.operator {
   background-color: #114b5f;
 }
-#oprator:hover,
+#operator:hover,
 .selected {
   background-color: #002335;
 }
