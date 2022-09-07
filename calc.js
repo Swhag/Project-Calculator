@@ -4,15 +4,15 @@ let currentOperator = null;
 let operatorSet = false;
 let operationComplete = false;
 
-const btnNumber = document.querySelectorAll("[data-number]");
-const btnOperator = document.querySelectorAll("[data-operator]");
-const btnClear = document.getElementById("clear");
-const btnDelete = document.getElementById("delete");
 const btnEquals = document.getElementById("equals");
+const btnDelete = document.getElementById("delete");
+const btnClear = document.getElementById("clear");
 const btnDecimal = document.getElementById("decimal");
 const btnNegative = document.getElementById("negative");
 const lastOperation = document.getElementById("lastOperation");
 const currentOperation = document.getElementById("currentOperation");
+const btnNumber = document.querySelectorAll("[data-number]");
+const btnOperator = document.querySelectorAll("[data-operator]");
 
 btnEquals.onmousedown = () => (calculate(), addPressed(btnEquals));
 btnDelete.addEventListener("click", deleteNumber);
