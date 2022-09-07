@@ -33,9 +33,9 @@ function appendNumber(number) {
 
   if (operationComplete === true) {
     clearDisplay(), (lastOperation.textContent = "");
-  } else if (currentOperation.textContent === "0" || operatorSet)
-    clearDisplay();
-  currentOperation.textContent += number;
+  }
+  if (currentOperation.textContent === "0" || operatorSet) clearDisplay();
+  if (exceedsDisplayLimit() === false) currentOperation.textContent += number;
 }
 
 function setOperation(operator) {
@@ -72,7 +72,8 @@ function addNegative() {
   addPressed(btnNegative);
   if (currentOperation.textContent.includes("-")) {
     currentOperation.textContent = currentOperation.textContent.slice(1);
-  } else if (currentOperation.textContent !== "0")
+  }
+  if (currentOperation.textContent !== "0")
     currentOperation.textContent = "-" + currentOperation.textContent;
 }
 
@@ -94,6 +95,14 @@ function clearDisplay() {
   currentOperation.textContent = "";
   operatorSet = false;
   operationComplete = false;
+}
+
+function exceedsDisplayLimit() {
+  if (currentOperation.textContent.length >= 12) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 const add = (a, b) => a + b;
