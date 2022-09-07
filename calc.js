@@ -20,15 +20,17 @@ btnClear.addEventListener("click", clearAll);
 btnDecimal.addEventListener("click", appendDecimal);
 btnNegative.addEventListener("click", addNegative);
 
-btnNumber.forEach((e) => (e.onmousedown = () => appendNumber(e.textContent)));
-btnOperator.forEach(
-  (e) => (e.onmousedown = () => (setOperation(e.textContent), addPressed(e)))
+btnNumber.forEach((e) =>
+  e.addEventListener("mousedown", () => appendNumber(e.textContent))
+);
+btnOperator.forEach((e) =>
+  e.addEventListener("mousedown", () => setOperation(e.textContent))
 );
 
 function appendNumber(number) {
-  let n = number;
-  num = document.getElementById(String(n));
-  addPressed(num);
+  pressedNumber = document.getElementById(String(number));
+  addPressed(pressedNumber);
+
   if (operationComplete === true) {
     clearDisplay(), (lastOperation.textContent = "");
   } else if (currentOperation.textContent === "0" || operatorSet)
@@ -37,6 +39,9 @@ function appendNumber(number) {
 }
 
 function setOperation(operator) {
+  pressedOperator = document.getElementById(String(operator));
+  addPressed(pressedOperator);
+
   if (currentOperator !== null) calculate();
   firstOperand = currentOperation.textContent;
   currentOperator = operator;
@@ -116,33 +121,24 @@ function operate(operator, a, b) {
       return null;
   }
 }
-document.addEventListener("keydown", (e) => {
-  if (e.key >= 0 && e.key <= 9) {
-    appendNumber(e.key);
-  }
 
-  switch (e.key) {
-    case "+":
-      return setOperation("+");
-    case "-":
-      return setOperation("−");
-    case "*":
-      return setOperation("×");
-    case "/":
-      return setOperation("÷");
-    case "^":
-      return setOperation("^");
-    case "Enter":
-      return calculate(), addPressed(btnEquals);
-    case "c":
-    case "Escape":
-      return clearAll();
-    case "Backspace":
-      return deleteNumber();
-    case ".":
-      return appendDecimal();
-  }
+//keyboard feature below
+document.addEventListener("keydown", (e) => {
+  if (e.key >= 0 && e.key <= 9) appendNumber(e.key);
+  if (e.key === "Enter") calculate(), addPressed(btnEquals);
+  if (e.key === ".") appendDecimal();
+  if (e.key === "Escape") clearAll();
+  if (e.key === "Backspace") deleteNumber();
+  if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/")
+    setOperation(convertOperator(e.key));
 });
+
+function convertOperator(keyboardOperator) {
+  if (keyboardOperator === "/") return "÷";
+  if (keyboardOperator === "*") return "×";
+  if (keyboardOperator === "-") return "−";
+  if (keyboardOperator === "+") return "+";
+}
 
 function addPressed(e) {
   e.classList.add("pressed");
