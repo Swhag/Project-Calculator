@@ -10,24 +10,25 @@ const btnClear = document.getElementById("clear");
 const btnDelete = document.getElementById("delete");
 const btnEquals = document.getElementById("equals");
 const btnDecimal = document.getElementById("decimal");
+const btnNegative = document.getElementById("negative");
 const lastOperation = document.getElementById("lastOperation");
 const currentOperation = document.getElementById("currentOperation");
-const btnNegative = document.getElementById("negative");
 
-btnEquals.addEventListener("click", calculate);
+btnEquals.onmousedown = () => (calculate(), addPressed(btnEquals));
 btnDelete.addEventListener("click", deleteNumber);
 btnClear.addEventListener("click", clearAll);
 btnDecimal.addEventListener("click", appendDecimal);
 btnNegative.addEventListener("click", addNegative);
 
-btnNumber.forEach((e) =>
-  e.addEventListener("click", () => appendNumber(e.textContent))
-);
-btnOperator.forEach((e) =>
-  e.addEventListener("click", () => setOperation(e.textContent))
+btnNumber.forEach((e) => (e.onmousedown = () => appendNumber(e.textContent)));
+btnOperator.forEach(
+  (e) => (e.onmousedown = () => (setOperation(e.textContent), addPressed(e)))
 );
 
 function appendNumber(number) {
+  let n = number;
+  num = document.getElementById(String(n));
+  addPressed(num);
   if (operationComplete === true) {
     clearDisplay(), (lastOperation.textContent = "");
   } else if (currentOperation.textContent === "0" || operatorSet)
@@ -57,11 +58,13 @@ function calculate() {
 }
 
 function appendDecimal() {
+  addPressed(btnDecimal);
   if (currentOperation.textContent.includes(".")) return;
   currentOperation.textContent += ".";
 }
 
 function addNegative() {
+  addPressed(btnNegative);
   if (currentOperation.textContent.includes("-")) {
     currentOperation.textContent = currentOperation.textContent.slice(1);
   } else if (currentOperation.textContent !== "0")
@@ -69,10 +72,12 @@ function addNegative() {
 }
 
 function deleteNumber() {
+  addPressed(btnDelete);
   currentOperation.textContent = currentOperation.textContent.slice(0, -1);
 }
 
 function clearAll() {
+  addPressed(btnClear);
   lastOperation.textContent = "";
   currentOperation.textContent = "0";
   firstOperand = "";
@@ -111,11 +116,11 @@ function operate(operator, a, b) {
       return null;
   }
 }
-
 document.addEventListener("keydown", (e) => {
   if (e.key >= 0 && e.key <= 9) {
     appendNumber(e.key);
   }
+
   switch (e.key) {
     case "+":
       return setOperation("+");
@@ -128,7 +133,7 @@ document.addEventListener("keydown", (e) => {
     case "^":
       return setOperation("^");
     case "Enter":
-      return calculate();
+      return calculate(), addPressed(btnEquals);
     case "c":
     case "Escape":
       return clearAll();
@@ -138,3 +143,13 @@ document.addEventListener("keydown", (e) => {
       return appendDecimal();
   }
 });
+
+function addPressed(e) {
+  e.classList.add("pressed");
+}
+
+function removeTransition(e) {
+  e.target.classList.remove("pressed");
+}
+const btns = Array.from(document.querySelectorAll(".btn"));
+btns.forEach((btn) => btn.addEventListener("transitionend", removeTransition));

@@ -76,10 +76,16 @@ body {
   font-weight: bold;
   cursor: pointer;
   width: 100px;
+  transition: all 0.07s ease;
 }
 
 .btn:hover {
   background-color: #002335;
+}
+.pressed {
+  transform: scale(1.1);
+  border-color: #002335;
+  box-shadow: 0 0 1rem #002335;
 }
 
 .oprator {
