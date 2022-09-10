@@ -100,10 +100,12 @@ p {
 .btn:hover {
   background-color: #002335;
 }
+
 .pressed {
   transform: scale(1.1);
   border-color: #002335;
   box-shadow: 0 0 1rem #002335;
+  background-color: #002335;
 }
 
 .operator {
