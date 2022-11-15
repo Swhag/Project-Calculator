@@ -1,30 +1,30 @@
-let firstOperand = "";
-let secondOperand = "";
+let firstOperand = '';
+let secondOperand = '';
 let currentOperator = null;
 let operatorSet = false;
 let operationComplete = false;
 
-const btnEquals = document.getElementById("equals");
-const btnDelete = document.getElementById("delete");
-const btnClear = document.getElementById("clear");
-const btnDecimal = document.getElementById("decimal");
-const btnNegative = document.getElementById("negative");
-const lastOperation = document.getElementById("lastOperation");
-const currentOperation = document.getElementById("currentOperation");
-const btnNumber = document.querySelectorAll("[data-number]");
-const btnOperator = document.querySelectorAll("[data-operator]");
+const btnEquals = document.getElementById('equals');
+const btnDelete = document.getElementById('delete');
+const btnClear = document.getElementById('clear');
+const btnDecimal = document.getElementById('decimal');
+const btnNegative = document.getElementById('negative');
+const lastOperation = document.getElementById('lastOperation');
+const currentOperation = document.getElementById('currentOperation');
+const btnNumber = document.querySelectorAll('[data-number]');
+const btnOperator = document.querySelectorAll('[data-operator]');
 
 btnEquals.onmousedown = () => (calculate(), addPressed(btnEquals));
-btnDelete.addEventListener("click", deleteNumber);
-btnClear.addEventListener("click", clearAll);
-btnDecimal.addEventListener("click", appendDecimal);
-btnNegative.addEventListener("click", addNegative);
+btnDelete.addEventListener('click', deleteNumber);
+btnClear.addEventListener('click', clearAll);
+btnDecimal.addEventListener('click', appendDecimal);
+btnNegative.addEventListener('click', addNegative);
 
 btnNumber.forEach((e) =>
-  e.addEventListener("mousedown", () => appendNumber(e.textContent))
+  e.addEventListener('mousedown', () => appendNumber(e.textContent))
 );
 btnOperator.forEach((e) =>
-  e.addEventListener("mousedown", () => setOperation(e.textContent))
+  e.addEventListener('mousedown', () => setOperation(e.textContent))
 );
 
 function appendNumber(number) {
@@ -32,9 +32,9 @@ function appendNumber(number) {
   addPressed(pressedNumber);
 
   if (operationComplete === true) {
-    clearDisplay(), (lastOperation.textContent = "");
+    clearDisplay(), (lastOperation.textContent = '');
   }
-  if (currentOperation.textContent === "0" || operatorSet) clearDisplay();
+  if (currentOperation.textContent === '0' || operatorSet) clearDisplay();
   if (exceedsDisplayLimit() === false) currentOperation.textContent += number;
 }
 
@@ -64,17 +64,17 @@ function calculate() {
 
 function appendDecimal() {
   addPressed(btnDecimal);
-  if (currentOperation.textContent.includes(".")) return;
-  currentOperation.textContent += ".";
+  if (currentOperation.textContent.includes('.')) return;
+  currentOperation.textContent += '.';
 }
 
 function addNegative() {
   addPressed(btnNegative);
-  if (currentOperation.textContent.includes("-")) {
+  if (currentOperation.textContent.includes('-')) {
     currentOperation.textContent = currentOperation.textContent.slice(1);
   }
-  if (currentOperation.textContent !== "0")
-    currentOperation.textContent = "-" + currentOperation.textContent;
+  if (currentOperation.textContent !== '0')
+    currentOperation.textContent = '-' + currentOperation.textContent;
 }
 
 function deleteNumber() {
@@ -84,15 +84,15 @@ function deleteNumber() {
 
 function clearAll() {
   addPressed(btnClear);
-  lastOperation.textContent = "";
-  currentOperation.textContent = "0";
-  firstOperand = "";
-  secondOperand = "";
+  lastOperation.textContent = '';
+  currentOperation.textContent = '0';
+  firstOperand = '';
+  secondOperand = '';
   currentOperator = null;
 }
 
 function clearDisplay() {
-  currentOperation.textContent = "";
+  currentOperation.textContent = '';
   operatorSet = false;
   operationComplete = false;
 }
@@ -114,47 +114,47 @@ function operate(operator, a, b) {
   a = Number(a);
   b = Number(b);
   switch (operator) {
-    case "+":
+    case '+':
       return add(a, b);
-    case "−":
+    case '−':
       return subtract(a, b);
-    case "×":
+    case '×':
       return multiply(a, b);
-    case "÷":
+    case '÷':
       if (b === 0)
-        return null, (currentOperation.textContent = "You cannot divide by 0");
+        return null, (currentOperation.textContent = 'You cannot divide by 0');
       else return divide(a, b);
-    case "^":
+    case '^':
       return Math.pow(a, b);
     default:
       return null;
   }
 }
 
-//keyboard feature below
-document.addEventListener("keydown", (e) => {
+// keyboard feature below
+document.addEventListener('keydown', (e) => {
   if (e.key >= 0 && e.key <= 9) appendNumber(e.key);
-  if (e.key === "Enter") calculate(), addPressed(btnEquals);
-  if (e.key === ".") appendDecimal();
-  if (e.key === "Escape") clearAll();
-  if (e.key === "Backspace") deleteNumber();
-  if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/")
+  if (e.key === 'Enter') calculate(), addPressed(btnEquals);
+  if (e.key === '.') appendDecimal();
+  if (e.key === 'Escape') clearAll();
+  if (e.key === 'Backspace') deleteNumber();
+  if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/')
     setOperation(convertOperator(e.key));
 });
 
 function convertOperator(keyboardOperator) {
-  if (keyboardOperator === "/") return "÷";
-  if (keyboardOperator === "*") return "×";
-  if (keyboardOperator === "-") return "−";
-  if (keyboardOperator === "+") return "+";
+  if (keyboardOperator === '/') return '÷';
+  if (keyboardOperator === '*') return '×';
+  if (keyboardOperator === '-') return '−';
+  if (keyboardOperator === '+') return '+';
 }
 
 function addPressed(e) {
-  e.classList.add("pressed");
+  e.classList.add('pressed');
 }
 
 function removeTransition(e) {
-  e.target.classList.remove("pressed");
+  e.target.classList.remove('pressed');
 }
-const btns = Array.from(document.querySelectorAll(".btn"));
-btns.forEach((btn) => btn.addEventListener("transitionend", removeTransition));
+const btns = Array.from(document.querySelectorAll('.btn'));
+btns.forEach((btn) => btn.addEventListener('transitionend', removeTransition));
