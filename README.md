@@ -1,4 +1,4 @@
-# Project-Calculator
+# Simple Project-Calculator (Small Project)
 
 ## Features
 
