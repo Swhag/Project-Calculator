@@ -3,7 +3,7 @@
   margin: 0;
   padding: 0;
   user-select: none;
-  font-family: "Inconsolata", monospace;
+  font-family: 'Inconsolata', monospace;
 }
 
 body {
@@ -40,12 +40,12 @@ p {
   justify-content: center;
   gap: 5px;
   grid-template-areas:
-    "display display display display"
-    "clear delete powerOf divide"
-    "seven eight nine multiply"
-    "four five six minus"
-    "one two three plus"
-    "negPos zero dot equal";
+    'display display display display'
+    'clear delete powerOf divide'
+    'seven eight nine multiply'
+    'four five six minus'
+    'one two three plus'
+    'negPos zero dot equal';
 }
 
 .display {
